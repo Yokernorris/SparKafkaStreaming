@@ -5,6 +5,9 @@ import org.apache.kafka.clients.producer.{Producer,KafkaProducer,ProducerRecord}
 import java.util.concurrent.TimeUnit
 
 
+/*
+  manda datos cada minuto, crear jar y ejecutar a parte
+ */
 object ProducerK {
   private val topic = "prueba"
   private val host = "localhost:9092"
@@ -45,7 +48,7 @@ object ProducerK {
     for(a <- 1 to 60){
       //se manda algo asi como id, placa y otro dato el caracter espacio es el separador
       producer.send(new ProducerRecord[String, String](topic,
-        Integer.toString(a), Integer.toString(a)+" placa"+ " varius"));
+        Integer.toString(a), Integer.toString(a)+" placa"+ " 0541"));
       println("“Message sent successfully”")
       TimeUnit.MINUTES.sleep(1)
       producer.close();

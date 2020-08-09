@@ -37,7 +37,21 @@ object StreamingProcess {
       LocationStrategies.PreferConsistent,
       ConsumerStrategies.Subscribe[String,String](topicsSet, kafkaParams))
 
-    println(messages)
+    //leemos informacion de la placa y creamos una tupla<string,int>
+    val lines = messages.map(_.value).map(line =>{
+      val fields = line.split(" ")
+      (fields(1),fields(2).toInt)
+    })
+
+    //leemos tabla y generamos un dataFrame
+    val df = session.sql("select campo1,campo2 from tablaTest")
+
+    //a partir de aqui podemos combinar datos y realizar combinaciones
+
+
+
+    // mostramos los datos de lines
+    lines.print()
 
 
 
