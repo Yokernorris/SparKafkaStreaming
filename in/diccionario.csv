@@ -1,0 +1,19 @@
+cod,referencia
+01,problema luces
+02,problema cristal
+03,problema tren
+04,problema cocina
+05,problema tripulacion
+06,problema pasaje
+07,problema motor
+08,problema hidraulico
+09,averia en motor
+10,averia en tren
+11,averia en luces
+12,averia en sys_hidraulico
+13,averia electrica
+14,reparar ala izd
+15,repara ala drcha
+16,reparar sys electrico
+17,reparar motor
+18,reparar hidraulica

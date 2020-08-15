@@ -1,9 +1,9 @@
 package spark
 
+import org.apache.hadoop.mapreduce.lib.map.WrappedMapper
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.spark.sql.SparkSession
-
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.streaming._
 import org.apache.spark.streaming.kafka010._
@@ -23,7 +23,7 @@ object StreamingProcess {
       .getOrCreate()
 
     val sc = session.sparkContext
-    val ssc = new StreamingContext(sc, Seconds(30))
+    val ssc = new StreamingContext(sc, Seconds(60))
     val topicsSet = topics.split(",").toSet
 
     val kafkaParams = Map[String, Object](
@@ -37,14 +37,42 @@ object StreamingProcess {
       LocationStrategies.PreferConsistent,
       ConsumerStrategies.Subscribe[String,String](topicsSet, kafkaParams))
 
-    //leemos informacion de la placa y creamos una tupla<string,int>
+    //leemos informacion de la placa y creamos una tupla<string,string,int>
     val lines = messages.map(_.value).map(line =>{
-      val fields = line.split(" ")
-      (fields(1),fields(2).toInt)
+      val fields = line.split("~")
+      if(fields.length>=3) {
+        //session.sql("select referencia from dicFly").show()
+        Tuple3(fields(0),fields(1),fields(2))
+      }
     })
 
     //leemos tabla y generamos un dataFrame
-    val df = session.sql("select campo1,campo2 from tablaTest")
+    val dictFly = session.sql("select * from dicFly")
+    val dataFly = session.sql("select * from dataFly")
+
+
+    lines.foreachRDD(rdd =>{
+      val rows = rdd.collect()
+      for (r <- rows){
+        //enriquecemos el dataset y creamos nueva tabla
+
+        //obtenemos ref
+        val ref = dictFly.filter(dictFly.col("cod").===(
+          r.asInstanceOf[(String,String,Int)]._3
+        )).select("referencia")
+        println(ref)
+
+        //obtenemos dato de avion
+
+
+
+      }
+
+    })
+
+
+
+
 
     //a partir de aqui podemos combinar datos y realizar combinaciones
 

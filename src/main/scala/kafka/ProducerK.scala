@@ -1,7 +1,8 @@
 package kafka
 
-import java.util.Properties
-import org.apache.kafka.clients.producer.{Producer,KafkaProducer,ProducerRecord}
+import java.util.{Calendar, Properties}
+
+import org.apache.kafka.clients.producer.{KafkaProducer, Producer, ProducerRecord}
 import java.util.concurrent.TimeUnit
 
 
@@ -42,17 +43,17 @@ object ProducerK {
     props.put("value.serializer",
       "org.apache.kafka.common.serialization.StringSerializer")
 
-
+    val rdn = scala.util.Random
     val producer = new KafkaProducer[String, String](props)
 
     for(a <- 1 to 60){
       //se manda algo asi como id, placa y otro dato el caracter espacio es el separador
       producer.send(new ProducerRecord[String, String](topic,
-        Integer.toString(a), Integer.toString(a)+" placa"+ " 0541"));
+        Integer.toString(a),Calendar.getInstance().getTime().toString + "~IB5577~"+ rdn.nextInt(19)));
       println("“Message sent successfully”")
       TimeUnit.MINUTES.sleep(1)
-      producer.close();
     }
+    producer.close();
 
   }
 
