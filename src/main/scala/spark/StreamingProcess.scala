@@ -8,6 +8,8 @@ import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.streaming._
 import org.apache.spark.streaming.kafka010._
 
+import scala.collection.mutable
+
 object StreamingProcess {
   private val host = "localhost:9092"
   private val topics = "prueba"
@@ -32,6 +34,19 @@ object StreamingProcess {
       ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG -> classOf[StringDeserializer],
       ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG -> classOf[StringDeserializer])
 
+    val dictFly = session.sql("select * from dicFly")
+    val dataFly = session.sql("select * from dataFly")
+
+    def generateTable(cod:String, placa:String, date:String): Unit ={
+      //la estructura final debe ser hora_incidencia,placa,compañia,origen,destino,cod,incidencia,tiempollegada
+      //obtenemos data de incidencia
+      val incidencia = dictFly.filter(dictFly.col("cod").===(cod))
+      val fly = dataFly.filter(dataFly.col("codigo").===(placa))
+      val df = fly.join(incidencia,"")
+    }
+
+
+
     val messages = KafkaUtils.createDirectStream[String, String](
       ssc,
       LocationStrategies.PreferConsistent,
@@ -46,46 +61,24 @@ object StreamingProcess {
       }
     })
 
-    //leemos tabla y generamos un dataFrame
-    val dictFly = session.sql("select * from dicFly")
-    val dataFly = session.sql("select * from dataFly")
 
 
     lines.foreachRDD(rdd =>{
       val rows = rdd.collect()
+
       for (r <- rows){
         //enriquecemos el dataset y creamos nueva tabla
-
-        //obtenemos ref
-        val ref = dictFly.filter(dictFly.col("cod").===(
-          r.asInstanceOf[(String,String,Int)]._3
-        )).select("referencia")
-        println(ref)
-
-        //obtenemos dato de avion
-
-
-
+        generateTable(
+          r.asInstanceOf[(String,String,String)]._3,
+          r.asInstanceOf[(String,String,String)]._2,
+          r.asInstanceOf[(String,String,String)]._1)
       }
-
     })
 
-
-
-
-
-    //a partir de aqui podemos combinar datos y realizar combinaciones
-
-
-
-    // mostramos los datos de lines
     lines.print()
-
-
 
     ssc.start()
     ssc.awaitTermination()
-
   }
 
   def main(args: Array[String]): Unit = {
