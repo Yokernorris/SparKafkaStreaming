@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Sat Aug 22 19:59:34 CEST 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0174-1753-604e-00000f19da58 
-on database directory C:\Users\david\Documents\repositorios\SparKafkaStreaming\metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@1abebef3 
-Loaded from file:/C:/Users/david/AppData/Local/Coursier/cache/v1/https/repo1.maven.org/maven2/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
-java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_191-b12
-user.dir=C:\Users\david\Documents\repositorios\SparKafkaStreaming
-os.name=Windows 10
+Thu Aug 27 19:48:46 CEST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0174-3109-4840-00000fbf56e0 
+on database directory /home/yoker/Documentos/repositorios/SparKafkaStreaming/metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@36327cec 
+Loaded from file:/home/yoker/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
+java.vendor=Private Build
+java.runtime.version=1.8.0_265-8u265-b01-0ubuntu2~20.04-b01
+user.dir=/home/yoker/Documentos/repositorios/SparKafkaStreaming
+os.name=Linux
 os.arch=amd64
-os.version=10.0
+os.version=5.4.0-42-generic
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''

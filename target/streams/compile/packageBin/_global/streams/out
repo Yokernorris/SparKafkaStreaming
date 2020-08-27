@@ -1,9 +1,0 @@
-[debug] Packaging C:\Users\david\Documents\repositorios\SparKafkaStreaming\target\scala-2.11\sparkafkastreaming_2.11-0.1.0-SNAPSHOT.jar ...
-[debug] Input file mappings:
-[debug] 	spark
-[debug] 	  C:\Users\david\Documents\repositorios\SparKafkaStreaming\target\scala-2.11\classes\spark
-[debug] 	spark\StreamingProcess$.class
-[debug] 	  C:\Users\david\Documents\repositorios\SparKafkaStreaming\target\scala-2.11\classes\spark\StreamingProcess$.class
-[debug] 	spark\StreamingProcess.class
-[debug] 	  C:\Users\david\Documents\repositorios\SparKafkaStreaming\target\scala-2.11\classes\spark\StreamingProcess.class
-[debug] Done packaging.

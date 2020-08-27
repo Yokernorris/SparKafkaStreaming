@@ -40,9 +40,17 @@ object StreamingProcess {
     def generateTable(cod:String, placa:String, date:String): Unit ={
       //la estructura final debe ser hora_incidencia,placa,compañia,origen,destino,cod,incidencia,tiempollegada
       //obtenemos data de incidencia
-      val incidencia = dictFly.filter(dictFly.col("cod").===(cod))
-      val fly = dataFly.filter(dataFly.col("codigo").===(placa))
-      val df = fly.join(incidencia,"")
+
+      val incidencia = dictFly.filter(dictFly.col("cod").===(cod)).select("*").collect()
+        .map(line => line.toString.replace("[","").replace("]","").split(","))
+      val fly = dataFly.filter(dataFly.col("codigo").===(placa)).select("*").collect()
+        .map(line => line.toString().replace("[","").replace("]","").split(","))
+
+      //TODO falta cambiar formato fecha, añadir tiempo faltante y decidir como escribir la info
+      if(incidencia != null && fly != null ) {
+        val result = (date, fly(0)(0), fly(0)(1), fly(0)(2), incidencia(0)(0), incidencia(0)(1), "FALTA")
+        println(result)
+      }
     }
 
 
@@ -75,7 +83,6 @@ object StreamingProcess {
       }
     })
 
-    lines.print()
 
     ssc.start()
     ssc.awaitTermination()
